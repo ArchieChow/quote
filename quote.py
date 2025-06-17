@@ -117,7 +117,7 @@ def calculate_price(cost_price, promotion_rate, tariff_rate, accessories_cost, q
     # 固定值
     insurance_fee_rate = 0.03
     profit_margin = 0.3
-    exchange_rate = 7.3
+    exchange_rate = 7.2
 
     insurance_fee = cost_price * insurance_fee_rate
     promotion = cost_price * promotion_rate
@@ -143,7 +143,7 @@ st.set_page_config(page_title="报价系统", layout="wide")
 st.title("🧮 报价系统 (Quotation Tool)")
 
 st.markdown(
-    "此工具用于快速计算商品总成本与售价，并生成专业报价单。\n\n**固定值：**\n- 汇率: 7.3\n- 信保手续费: 3%\n- 利润率: 30%")
+    "此工具用于快速计算商品总成本与售价，并生成专业报价单。\n\n**固定值：**\n- 汇率: 7.2\n- 信保手续费: 3%\n- 利润率: 30%")
 
 # --- 核价计算区 ---
 st.subheader("🧾 核价计算区")
