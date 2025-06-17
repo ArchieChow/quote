@@ -399,7 +399,7 @@ country_code = country_map[selected_country_name]
 weight = st.text_input("请输入包裹重量 (kg)", "1")
 
 # 固定汇率
-exchange_rate = 7.3
+exchange_rate = 7.2
 
 # 查询按钮
 if st.button("查询运费"):
@@ -443,3 +443,54 @@ if st.button("查询运费"):
 
     except Exception as e:
         st.error(f"查询失败：{e}")
+import streamlit as st
+import requests
+import json
+
+st.set_page_config(page_title="快递轨迹查询", layout="centered")
+
+st.title("📦 快递轨迹查询工具")
+st.markdown("请输入需要查询的运单号：")
+
+# 用户输入
+tracking_number = st.text_input("运单号", placeholder="例如：YT1234567890")
+
+if tracking_number:
+    with st.spinner("查询中，请稍候..."):
+        url = "http://order.hy-express.com/webservice/PublicService.asmx/ServiceInterfaceUTF8"
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+        payload = {
+            "appToken": "3f7e28f91fe9012a8cf511673228d5b6",
+            "appKey": "a68b54a8852c481d00ad92625da6a6e8a68b54a8852c481d00ad92625da6a6e8",
+            "serviceMethod": "gettrack",
+            "paramsJson": json.dumps({
+                "tracking_number": tracking_number,
+            })
+        }
+
+        try:
+            response = requests.post(url, headers=headers, data=payload)
+            response.raise_for_status()
+            get_data = json.loads(response.text).get("data", [])
+        except Exception as e:
+            st.error(f"查询失败：{e}")
+            st.stop()
+
+        if not get_data:
+            st.warning("未找到对应的运单信息，请确认运单号是否正确。")
+        else:
+            st.success("查询成功，以下是物流轨迹：")
+            for data in get_data:
+                details = data.get("details", [])
+                for detail in details:
+                    st.markdown(f"""
+                    - **时间：** {detail.get("track_occur_date", "")}  
+                      **地点：** {detail.get("track_location", "")}  
+                      **状态：** {detail.get("track_description", "")}
+                    """)
+
+# 底部信息
+st.markdown("---")
+st.caption("浩远物流")
