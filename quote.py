@@ -426,7 +426,7 @@ if st.button("查询运费"):
             result_list = []
             for data in get_data:
                 total_fee = float(data.get("TotalFee", 0))
-                total_fee_usd = round(total_fee / exchange_rate, 2)
+                total_fee_usd = round(total_fee / exchange_rate, 3)
                 result_list.append({
                     "运输方式": data.get("ServiceCnName", ""),
                     "运输时效": data.get("Effectiveness", ""),
