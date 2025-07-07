@@ -78,8 +78,8 @@ def get_quote_by_number(quote_number):
             st.write(f"**客户姓名**: {quote.client_name}")
             st.write(f"**报价日期**: {quote.quote_date}")
             st.write(f"**商品明细**: {json.loads(quote.items)}")  # 转换 JSON 字符串为 Python 对象
-            st.write(f"**运费**: ${quote.shipping_cost:.2f}")
-            st.write(f"**总费用**: ${quote.total_cost:.2f}")
+            st.write(f"**运费**: ${quote.shipping_cost:.3f}")
+            st.write(f"**总费用**: ${quote.total_cost:.3f}")
             st.write(f"**运输时长**: {quote.shipping_time}")
             st.write(f"**运输方式**: {quote.shipping_method}")
             st.write(f"**备注**: {quote.remarks}")
@@ -99,8 +99,8 @@ def get_quotes_by_client_name(client_name):
                 st.write(f"**客户姓名**: {quote.client_name}")
                 st.write(f"**报价日期**: {quote.quote_date}")
                 st.write(f"**商品明细**: {json.loads(quote.items)}")  # 转换 JSON 字符串为 Python 对象
-                st.write(f"**运费**: ${quote.shipping_cost:.2f}")
-                st.write(f"**总费用**: ${quote.total_cost:.2f}")
+                st.write(f"**运费**: ${quote.shipping_cost:.3f}")
+                st.write(f"**总费用**: ${quote.total_cost:.3f}")
                 st.write(f"**运输时长**: {quote.shipping_time}")
                 st.write(f"**运输方式**: {quote.shipping_method}")
                 st.write(f"**备注**: {quote.remarks}")
@@ -164,7 +164,7 @@ if st.button("📊 开始计算"):
     result = calculate_price(cost_price, promotion_rate, tariff_rate, accessories_cost, quantity)
     st.subheader("📈 计算结果：")
     for label, value in result.items():
-        st.write(f"**{label}**: {value:.2f}")
+        st.write(f"**{label}**: {value:.3f}")
 else:
     st.info("请填写所有必填项并点击“开始计算”按钮。")
 
@@ -205,10 +205,10 @@ for i in range(int(item_count)):
         with cols[3]:
             qty = st.number_input(f"Qty_{i}", key=f"qty_{i}", value=0)
         with cols[4]:
-            unit_price = st.number_input(f"Unit price($)_{i}", key=f"price_{i}", value=0.0, format="%.2f")
+            unit_price = st.number_input(f"Unit price($)_{i}", key=f"price_{i}", value=0.0, format="%.3f")
         total_price = qty * unit_price
         with cols[5]:
-            st.markdown(f"**${total_price:.2f}**")
+            st.markdown(f"**${total_price:.3f}**")
         st.markdown("</div>", unsafe_allow_html=True)
 
         items.append({
@@ -223,7 +223,7 @@ for i in range(int(item_count)):
 # 运费输入
 st.markdown("---")
 shipping_method = st.text_input("运输方式 (Shipping Method)", value="")  # 用户输入运输方式
-shipping_cost = st.number_input("运费 Shipping cost ($)", value=0.0, step=0.01, format="%.2f", key="shipping_cost")
+shipping_cost = st.number_input("运费 Shipping cost ($)", value=0.0, step=0.01, format="%.3f", key="shipping_cost")
 shipping_time = st.text_input("运输时长 (Shipping Time, e.g., 4-7 working days)", value="4-7 working days")
 remarks = st.text_area("备注 (Optional)", value="")  # 备注
 
@@ -248,12 +248,12 @@ for i, item in enumerate(items):
     quote_content += f"Specifications: {item['Specifications']}\n"
     quote_content += f"Size: {item['Size']}\n"
     quote_content += f"Quantity (Pieces): {item['Qty']}\n"
-    quote_content += f"Unit Price: ${item['Unit price($)']:.2f}\n"
-    quote_content += f"Total Price: ${item['Total price($)']:.2f}\n"
+    quote_content += f"Unit Price: ${item['Unit price($)']:.3f}\n"
+    quote_content += f"Total Price: ${item['Total price($)']:.3f}\n"
 
-quote_content += f"New Customer (with 10% discount): ${discounted_subtotal:.2f}\n"  # 显示折扣后的价格
-quote_content += f"Shipping cost ({shipping_time}): ${shipping_cost:.2f}\n"
-quote_content += f"Total cost: ${total_cost:.2f}\n"
+quote_content += f"New Customer (with 10% discount): ${discounted_subtotal:.3f}\n"  # 显示折扣后的价格
+quote_content += f"Shipping cost ({shipping_time}): ${shipping_cost:.3f}\n"
+quote_content += f"Total cost: ${total_cost:.3f}\n"
 # quote_content += f"Shipping Method: {shipping_method}\n"
 # quote_content += f"Remarks: {remarks}\n"  # 显示备注
 
@@ -431,8 +431,8 @@ if st.button("查询运费"):
                     "运输方式": data.get("ServiceCnName", ""),
                     "运输时效": data.get("Effectiveness", ""),
                     "计费重量 (kg)": data.get("ChargeWeight", ""),
-                    "总费用 (RMB)": f"{total_fee:.2f}",
-                    "总费用 (USD)": f"{total_fee_usd:.2f}"
+                    "总费用 (RMB)": f"{total_fee:.3f}",
+                    "总费用 (USD)": f"{total_fee_usd:.3f}"
                 })
 
             df = pd.DataFrame(result_list)
